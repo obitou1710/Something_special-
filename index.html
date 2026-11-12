@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For You 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Kalam:wght@300;400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  height: 100svh;
+  background: radial-gradient(circle, #641b30, #17000b);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+  overflow: hidden;
+  color: white;
+  padding: 20px;
+  position: relative;
+}
+
+/* AMBIENT GLOWING AURA */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(168, 60, 255, 0.16) 0%, rgba(255, 101, 213, 0.06) 40%, transparent 70%);
+  animation: ambientShift 12s ease-in-out infinite alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes ambientShift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(3%, 5%) scale(1.1); }
+}
+
+/* STABLE NAME ENTRY SCREEN */
+.name-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background: radial-gradient(ellipse at center, #783047 0%, #3a1021 55%, #17000b 100%);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.name-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.name-card {
+  width: 100%;
+  max-width: 340px;
+  padding: 30px 24px;
+  border-radius: 24px;
+  background: rgba(50, 10, 25, 0.85);
+  border: 1px solid rgba(255, 185, 205, 0.35);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 105, 150, 0.15);
+}
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 190, 210, 0.15);
+  border: 1px solid rgba(255, 190, 210, 0.3);
+  font-size: 26px;
+}
+
+.card-tag {
+  color: #ffb2c7;
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.name-card h2 {
+  color: #ffe0e9;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.name-card .intro {
+  color: #eac2ce;
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.name-input {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 175, 200, 0.4);
+  background: rgba(30, 3, 15, 0.5);
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.name-input::placeholder {
+  color: rgba(255, 211, 222, 0.6);
+}
+
+.name-input:focus {
+  border-color: #ff9fba;
+  box-shadow: 0 0 12px rgba(255, 110, 150, 0.3);
+}
+
+.enter-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 13px 12px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ff7199, #dc2858);
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(220, 40, 88, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.enter-btn:hover {
+  transform: translateY(-1px);
+}
+
+.enter-btn:active {
+  transform: scale(0.98);
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #ffb3c4;
+  font-size: 13px;
+  min-height: 18px;
+}
+
+/* LETTER PAGE */
+.letter-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  z-index: 100;
+}
+
+.letter-page.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+h1 {
+  text-align: center;
+  color: #ff9bb7;
+  margin-bottom: 40px;
+  font-size: 24px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.envelope-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.envelope {
+  width: 300px;
+  height: 190px;
+  position: relative;
+}
+
+.back {
+  position: absolute;
+  inset: 0;
+  background: #f8a5b7;
+  border-radius: 5px;
+  z-index: 0;
+}
+
+/* LETTER PAPER */
+.letter {
+  position: absolute;
+  width: 270px;
+  height: 175px;
+  left: 50%;
+  bottom: 5px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 10% 10%, #fff5f8, transparent 45%), linear-gradient(135deg, #fff0f5, #fbdce8, #fff1f5);
+  color: #87445e;
+  padding: 20px;
+  z-index: 2;
+  border: 1px solid #e9b7c9;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(170, 75, 110, 0.16);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.8s ease, height 0.8s ease, padding 0.8s ease, top 0.8s ease, bottom 0.8s ease, left 0.8s ease;
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+.letter::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(190, 115, 145, 0.4);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.letter::after {
+  content: "❀";
+  position: absolute;
+  top: 12px;
+  right: 17px;
+  color: #d98ba8;
+  font-size: 19px;
+  pointer-events: none;
+}
+
+.letter h2 {
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-style: italic;
+  font-weight: normal;
+  font-size: 21px;
+  color: #bd547b;
+  margin-bottom: 8px;
+}
+
+.letter-divider {
+  text-align: center;
+  color: #d77c9e;
+  font-size: 14px;
+  letter-spacing: 5px;
+  margin: 5px 0 12px;
+}
+
+.letter p {
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #81465e;
+}
+
+.signature {
+  text-align: right;
+  margin-top: 15px;
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-style: italic;
+  font-size: 15px;
+  color: #bd547b;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+  border-top: 110px solid #ffb4c5;
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 5;
+}
+
+.front {
+  position: absolute;
+  inset: 0;
+  background: #ff8fa9;
+  clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
+  z-index: 4;
+  border-radius: 5px;
+}
+
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background: #d92551;
+  color: white;
+  font-size: 22px;
+  z-index: 6;
+  box-shadow: 0 0 15px #ff668b;
+}
+
+.envelope.open .flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope.open .seal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope.open .letter {
+  transform: translate(-50%, -130px);
+}
+
+.envelope.open.spread .letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 600px;
+  height: 72vh;
+  max-height: 480px;
+  padding: 30px 25px;
+  z-index: 9999;
+  box-shadow: 0 0 40px rgba(255, 140, 170, 0.5);
+  overflow-y: auto;
+}
+
+/* FIXED CLOSING SEQUENCE */
+.envelope.closing .letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  bottom: auto;
+  width: 270px;
+  height: 175px;
+  max-width: none;
+  max-height: none;
+  padding: 20px;
+  transform: translate(-50%, 45px) scale(0.92);
+  z-index: 9999;
+  overflow: hidden;
+  transition: top 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.8s ease, height 0.8s ease, padding 0.8s ease;
+}
+
+.envelope.closing.returning .letter {
+  top: calc(50% + 145px);
+  transform: translate(-50%, -50%) scale(0.92);
+  z-index: 9999;
+}
+
+.envelope.closing.returning .letter h2,
+.envelope.closing.returning .letter p,
+.envelope.closing.returning .letter-divider {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.envelope.closing .flap {
+  z-index: 5;
+  transition: transform 0.6s ease 0.8s;
+}
+
+.instruction {
+  margin-top: 40px;
+  color: #ffb6ca;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* FLOATING EFFECTS */
+.hearts, .sparkles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  bottom: -30px;
+  color: #ff8eae;
+  animation: float 6s linear forwards;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  85% { opacity: 0.8; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+.sparkle {
+  position: absolute;
+  bottom: -20px;
+  color: #ffe3ec;
+  font-size: 12px;
+  animation: sparkleFloat 5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes sparkleFloat {
+  0% { transform: translateY(0) scale(0.3) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; transform: translateY(-20vh) scale(1) rotate(90deg); }
+  100% { transform: translateY(-110vh) scale(0.2) rotate(360deg); opacity: 0; }
+}
+
+/* MAGICAL ROYAL DOOR SCREEN */
+.special-page {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #361f3a, #0b0410 75%);
+}
+
+.special-page.visible {
+  display: flex;
+}
+
+.door-screen {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.door-heading {
+  max-width: 500px;
+  font-size: clamp(22px, 5.5vw, 32px);
+  line-height: 1.4;
+  color: #ffe1ee;
+  font-weight: normal;
+  text-shadow: 0 0 15px #ff9dc9;
+  margin-bottom: 8px;
+}
+
+.door-question {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  color: #f5d2e6;
+  font-size: 14.5px;
+}
+
+.royal-scene {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+}
+
+.royal-entrance {
+  width: 280px;
+  height: 360px;
+  position: relative;
+  padding: 14px;
+  border: 8px solid #5a4231;
+  border-radius: 150px 150px 40px 40px;
+  background: linear-gradient(135deg, #8a715a, #2c1f1b, #6b533f);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.6);
+  transform-style: preserve-3d;
+}
+
+.stone-arch {
+  position: absolute;
+  inset: 6px;
+  border: 3px solid #f3cb87;
+  border-radius: 135px 135px 30px 30px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.door-glow {
+  position: absolute;
+  inset: 12px;
+  border-radius: 125px 125px 25px 25px;
+  background: radial-gradient(ellipse at bottom, #fff9db, #ffb85c 40%, #9c3d74 75%, #2a0a24);
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+
+.royal-entrance.opened .door-glow {
+  opacity: 1;
+}
+
+.royal-door {
+  position: absolute;
+  inset: 12px;
+  display: flex;
+  perspective: 1400px;
+  border-radius: 125px 125px 25px 25px;
+  overflow: hidden;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.door-panel {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(90deg, #33170e, #713e22, #422113);
+  border: 3px solid #b88a51;
+  transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1);
+}
+
+.left-panel {
+  transform-origin: left center;
+  border-top-left-radius: 125px;
+  border-bottom-left-radius: 25px;
+}
+
+.right-panel {
+  transform-origin: right center;
+  border-top-right-radius: 125px;
+  border-bottom-right-radius: 25px;
+}
+
+.wood-frame {
+  position: absolute;
+  inset: 10px 6px;
+  border: 1px solid #b88a51;
+  border-radius: 110px 110px 15px 15px;
+}
+
+.door-decoration {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f7dfa9;
+  font-size: 28px;
+}
+
+.door-handle {
+  position: absolute;
+  top: 53%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, #cca14b 60%, #694514);
+}
+
+.left-panel .door-handle { right: 6px; }
+.right-panel .door-handle { left: 6px; }
+
+.lantern {
+  position: absolute;
+  top: 35%;
+  font-size: 26px;
+  z-index: 5;
+}
+
+.lantern-left { left: -35px; }
+.lantern-right { right: -35px; }
+
+.door-rose {
+  position: absolute;
+  font-size: 22px;
+  z-index: 5;
+}
+.rose-left { bottom: 5px; left: -10px; }
+.rose-right { bottom: 5px; right: -10px; }
+.rose-top-left { top: 5px; left: 10px; }
+.rose-top-right { top: 5px; right: 10px; }
+
+.royal-door.open .left-panel { transform: rotateY(-125deg); }
+.royal-door.open .right-panel { transform: rotateY(125deg); }
+.royal-door.open { overflow: visible; pointer-events: none; }
+
+.door-tap {
+  color: #ffe0b9;
+  letter-spacing: 3px;
+  font-size: 13px;
+  margin-top: 25px;
+}
+
+.particle {
+  position: fixed;
+  pointer-events: none;
+  animation: floatUp 2s ease-out forwards;
+  z-index: 400;
+}
+
+@keyframes floatUp {
+  0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+  100% { transform: translate(var(--tx),var(--ty)) scale(1.3); opacity: 0; }
+}
+
+/* ==========================================================
+   DIARY SCREENS
+========================================================== */
+.screen {
+  position: absolute;
+  inset: 0;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  z-index: 500;
+  background: radial-gradient(circle at top, #54246c, transparent 55%), linear-gradient(145deg, #10091d, #291039, #10091d);
+}
+
+.screen.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+h2.diary-main-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: #ffc6ed;
+  font-size: clamp(26px, 7vw, 40px);
+  margin-bottom: 8px;
+  text-shadow: 0 0 12px #ff65d5;
+}
+
+.subtitle {
+  color: #eac8f5;
+  margin-bottom: 15px;
+  font-size: 13.5px;
+}
+
+.calendar {
+  width: min(100%, 390px);
+  padding: 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .07);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 190, 245, .35);
+  box-shadow: 0 0 22px #a33cc755;
+}
+
+.weekdays, .days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.weekdays span {
+  color: #eab5ef;
+  font-size: 11.5px;
+  padding: 5px 0;
+}
+
+.day {
+  aspect-ratio: 1;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .08);
+  border: none;
+  font-size: 13.5px;
+  color: white;
+  font-family: inherit;
+}
+
+.day:disabled {
+  opacity: .75;
+}
+
+.day.special {
+  background: #9b3e9d;
+  border: 2px solid #ffb5ed;
+  box-shadow: 0 0 10px #ff54d7, 0 0 20px #a83cff;
+  animation: pulse 1.5s infinite;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 18px #ff6bdc, 0 0 32px #a83cff;
+    transform: scale(1.06);
+  }
+}
+
+.diary-book {
+  position: relative;
+  width: min(92vw, 360px);
+  height: min(72vh, 460px);
+  perspective: 1600px;
+  border-radius: 6px 18px 18px 6px;
+  background: #421c44;
+  padding: 6px 8px 6px 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(255, 130, 220, 0.3);
+  transition: box-shadow 0.5s ease;
+}
+
+.diary-book.celebrating {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 45px rgba(255, 200, 90, 0.75), 0 0 80px rgba(255, 101, 213, 0.65);
+}
+
+.diary-book::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  right: 3px;
+  bottom: 9px;
+  width: 6px;
+  background: repeating-linear-gradient(to right, #f7efe2, #f7efe2 1px, #cbbba4 2px);
+  border-radius: 0 8px 8px 0;
+  z-index: 1;
+}
+
+.pages-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.diary-sheet {
+  position: absolute;
+  inset: 0;
+  background-color: #fbf5ea;
+  color: #2b1a29;
+  padding: 16px 14px 16px 32px;
+  border-radius: 3px 13px 13px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  backface-visibility: hidden;
+  will-change: transform;
+  box-shadow: inset 14px 0 22px -12px rgba(45, 25, 40, 0.45), 2px 0 8px rgba(0, 0, 0, 0.18);
+  background-image: linear-gradient(to right, rgba(45, 25, 40, 0.16) 0%, transparent 7%), linear-gradient(to right, transparent 24px, rgba(217, 107, 107, 0.45) 24px, rgba(217, 107, 107, 0.45) 25.5px, transparent 25.5px), repeating-linear-gradient(to bottom, transparent 0px, transparent 24px, rgba(120, 145, 175, 0.22) 25px);
+}
+
+.diary-sheet::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 7px;
+  width: 9px;
+  background-image: radial-gradient(circle, #38183a 3px, transparent 3.5px);
+  background-size: 9px 26px;
+  background-repeat: repeat-y;
+  opacity: 0.85;
+}
+
+.diary-sheet.flipped {
+  transform: rotateY(-175deg);
+  pointer-events: none;
+}
+
+.diary-sheet.no-auto-turn {
+  cursor: default;
+}
+
+.intro-sheet {
+  justify-content: center;
+  padding: 20px 16px 20px 32px;
+}
+
+.intro-icon {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.intro-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a1f4b;
+  margin-bottom: 12px;
+}
+
+.intro-body {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #361e34;
+  white-space: pre-line;
+  min-height: 150px;
+  max-width: 96%;
+}
+
+.photo-frame {
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #dfd3c3;
+  box-shadow: 0 3px 10px rgba(43, 26, 41, 0.15);
+  transform: rotate(-1.2deg);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.memory-image {
+  width: min(45vw, 150px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 2px;
+}
+
+.page-date-stamp {
+  font-family: 'Kalam', cursive;
+  font-size: 11.5px;
+  color: #9a6588;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.diary-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #4a1f4b;
+  margin-bottom: 3px;
+}
+
+.diary-story {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  line-height: 1.32;
+  color: #361e34;
+  max-width: 96%;
+  min-height: 65px;
+}
+
+.question-diary-text {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: #361e34;
+  margin: 10px 0 16px;
+  max-width: 94%;
+}
+
+.diary-answers {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  z-index: 5;
+}
+
+.diary-btn {
+  padding: 9px 22px;
+  border-radius: 25px;
+  background: #8a3488;
+  font-size: 15px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-family: 'Lora', Georgia, serif;
+  box-shadow: 0 3px 10px rgba(138, 52, 136, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.diary-btn.no {
+  background: #7c687a;
+  box-shadow: none;
+}
+
+.diary-btn:hover {
+  transform: scale(1.04);
+}
+
+.celebration-banner {
+  margin-top: 14px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #8a1c7c;
+  text-shadow: 0 0 10px rgba(255, 195, 75, 0.9);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  min-height: 25px;
+}
+
+.celebration-banner.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.firework-spark {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 600;
+  animation: sparkFly 1.1s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+}
+
+@keyframes sparkFly {
+  0% { transform: translate(0, 0) scale(1.2); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
+}
+
+.reaction-badge {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  color: #8a3488;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.diary-textarea {
+  width: 95%;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px dashed #b98ab7;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #2b1a29;
+  resize: none;
+  outline: none;
+  margin: 6px 0 10px;
+  position: relative;
+  z-index: 5;
+}
+
+.diary-textarea::placeholder { color: #8c6d89; }
+
+.saved-note-display {
+  font-family: 'Kalam', cursive;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #361e34;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 10px;
+  padding: 12px;
+  width: 95%;
+  min-height: 120px;
+  max-height: 160px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  margin: 6px 0 10px;
+  border: 1px solid #dfc7dd;
+  display: none;
+}
+
+.seal-status {
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  color: #8a3488;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.typing-cursor::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 2px;
+  color: #8b3a89;
+  animation: cursorBlink 0.7s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.image-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.prev-button {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 184, 237, 0.4);
+  color: #ffd0f0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.prev-button.hidden { display: none; }
+.image-hint { color: #f2c8ed; font-size: 12.5px; }
+.small-footer { color: #d8b3e5; font-size: 11.5px; margin-top: 12px; }
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1: NAME ENTRY -->
+<div class="name-screen" id="nameScreen">
+  <div class="name-card">
+    <div class="card-icon">💌</div>
+    <div class="card-tag">A LITTLE SURPRISE</div>
+    <h2>For Someone Special ✨</h2>
+    <p class="intro">
+      A little something is waiting for you.<br>
+      Enter your name to discover it.
+    </p>
+    <form id="nameForm">
+      <label for="nameInput" class="visually-hidden">Enter your name</label>
+      <input type="text" id="nameInput" class="name-input" placeholder="Your name" autocomplete="off" required>
+      <button type="submit" class="enter-btn">Open My Letter 💖</button>
+    </form>
+    <p class="error-message" id="errorMessage"></p>
+  </div>
+</div>
+
+<!-- PAGE 2: LETTER -->
+<div class="letter-page" id="letterPage">
+  <h1>A Little Something From My Heart 💖</h1>
+  <div class="hearts" id="hearts"></div>
+  <div class="sparkles" id="sparkles"></div>
+
+  <div class="envelope-container">
+    <div class="envelope" id="envelope">
+      <div class="back"></div>
+      <div class="letter" id="paperLetter">
+        <h2>Dear <span id="person">you</span>,</h2>
+        <div class="letter-divider">♡ ✦ ♡</div>
+        <p id="message"></p>
+        <p class="signature" id="signature"></p>
+      </div>
+      <div class="flap"></div>
+      <div class="front"></div>
+      <button class="seal" id="seal">💖</button>
+    </div>
+  </div>
+  <p class="instruction" id="instruction">Tap the heart seal to open 💖</p>
+</div>
+
+<!-- PAGE 3: OLD MAGICAL ROYAL DOOR -->
+<div class="special-page" id="specialPage">
+  <div class="door-screen" id="doorScreen">
+    <h2 class="door-heading">
+      A thousand little moments, one journey. ✨
+    </h2>
+    <p class="door-question">What's special today? 💖</p>
+    
+    <div class="royal-scene" id="royalScene">
+      <div class="royal-entrance" id="royalEntrance">
+        <div class="stone-arch"></div>
+        <div class="door-glow"></div>
+        <div class="lantern lantern-left">🏮</div>
+        <div class="lantern lantern-right">🏮</div>
+        
+        <div class="royal-door" id="doorButton" role="button" tabindex="0" aria-label="Open the magical door">
+          <div class="door-panel left-panel">
+            <div class="wood-frame"></div>
+            <div class="door-decoration">✿</div>
+            <div class="door-handle"></div>
+          </div>
+          <div class="door-panel right-panel">
+            <div class="wood-frame"></div>
+            <div class="door-decoration">✿</div>
+            <div class="door-handle"></div>
+          </div>
+        </div>
+
+        <div class="door-rose rose-left">🌹</div>
+        <div class="door-rose rose-right">🌹</div>
+        <div class="door-rose rose-top-left">🌸</div>
+        <div class="door-rose rose-top-right">🌸</div>
+      </div>
+    </div>
+    
+    <p class="door-tap" id="doorTap">✨ TAP TO OPEN ✨</p>
+  </div>
+</div>
+
+<!-- SCREEN 4: CALENDAR SCREEN -->
+<section class="screen" id="calendarScreen">
+  <h2 class="diary-main-title">November 2026 💗</h2>
+  <p class="subtitle">Some dates become beautiful memories ✨</p>
+  <div class="calendar">
+    <div class="weekdays">
+      <span>Sun</span><span>Mon</span><span>Tue</span>
+      <span>Wed</span><span>Thu</span><span>Fri</span>
+      <span>Sat</span>
+    </div>
+    <div class="days" id="calendarDays"></div>
+  </div>
+  <p class="small-footer">A little surprise is waiting for you ♡</p>
+</section>
+
+<!-- SCREEN 5: COMPLETE DIARY BOOK -->
+<section class="screen" id="imageScreen">
+  <div class="diary-book" id="diaryBook">
+    <div class="pages-stack" id="pagesStack"></div>
+  </div>
+
+  <div class="image-controls">
+    <button class="prev-button hidden" id="prevButton" onclick="prevPage()">← Prev Page</button>
+    <p class="image-hint" id="imageHint">Tap the page to turn ✨</p>
+  </div>
+</section>
+
+<script>
+/* ELEMENTS */
+const nameScreen = document.getElementById("nameScreen");
+const nameForm = document.getElementById("nameForm");
+const nameInput = document.getElementById("nameInput");
+const errorMessage = document.getElementById("errorMessage");
+const letterPage = document.getElementById("letterPage");
+const personName = document.getElementById("person");
+
+const seal = document.getElementById("seal");
+const envelope = document.getElementById("envelope");
+const letter = document.getElementById("paperLetter");
+const message = document.getElementById("message");
+const instruction = document.getElementById("instruction");
+
+const specialPage = document.getElementById("specialPage");
+const doorScreen = document.getElementById("doorScreen");
+const doorButton = document.getElementById("doorButton");
+const calendarScreen = document.getElementById("calendarScreen");
+
+let opened = false;
+let typingTimeout = null;
+let giftTimer = null;
+
+/* ALLOWED SECRET WORDS */
+const allowedWords = ["ladu", "angry bird", "guna"];
+const fullMessage = "From the very first hello, you became my favourite smile. Even when you're acting like my little angry bird, you are still the absolute love of my life! Thank you for staying by my side through everything. Out of all the paths life could have taken me, finding you was the greatest magic. You make my days so much brighter and happier. 💖";
+const sigText = "Forever, always 💖";
+
+/* NAME VALIDATION */
+nameForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const enteredName = nameInput.value.trim();
+  if (!enteredName) {
+    errorMessage.textContent = "Please enter your name first.";
+    return;
+  }
+  const enteredNameLower = enteredName.toLowerCase();
+  const isAllowed = allowedWords.some((word) => enteredNameLower.includes(word));
+
+  if (!isAllowed) {
+    errorMessage.textContent = "Sorry, this letter is not for you 💌";
+    nameInput.value = "";
+    return;
+  }
+
+  personName.textContent = enteredName;
+  errorMessage.textContent = "";
+  nameScreen.classList.add("hidden");
+  letterPage.classList.add("visible");
+});
+
+/* OPEN ENVELOPE */
+seal.addEventListener("click", (event) => {
+  event.stopPropagation();
+  if (opened) return;
+  opened = true;
+  envelope.classList.add("open");
+  instruction.textContent = "Your letter is opening 💌";
+
+  setTimeout(() => { envelope.classList.add("spread"); }, 800);
+  setTimeout(() => {
+    typeLetter(fullMessage, message);
+    instruction.textContent = "Tap anywhere outside the letter to close 💌";
+  }, 1700);
+});
+
+/* TYPING EFFECT FOR LETTER */
+function typeLetter(text, element, speed = 60) {
+  let i = 0;
+  element.textContent = "";
+  document.getElementById("signature").textContent = "";
+
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      typingTimeout = setTimeout(type, speed);
+    } else {
+      document.getElementById("signature").textContent = sigText;
+    }
+  }
+  type();
+}
+
+/* CLOSE ENVELOPE */
+function closeLetter() {
+  if (!opened) return;
+  clearTimeout(typingTimeout);
+  envelope.classList.add("closing");
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      envelope.classList.add("returning");
+    });
+  });
+
+  setTimeout(() => {
+    envelope.classList.remove("open");
+    setTimeout(() => {
+      envelope.classList.remove("spread", "closing", "returning");
+      message.textContent = "";
+      document.getElementById("signature").textContent = "";
+      instruction.textContent = "Tap the heart seal to open 💖";
+      opened = false;
+      letterPage.classList.remove("visible");
+
+      giftTimer = setTimeout(() => {
+        specialPage.classList.add("visible");
+      }, 1200);
+    }, 900);
+  }, 1200);
+}
+
+document.addEventListener("click", (event) => {
+  if (!opened || !envelope.classList.contains("spread")) return;
+  const clickedInsideLetter = letter.contains(event.target);
+  if (!clickedInsideLetter) {
+    closeLetter();
+  }
+});
+
+/* FLOATING HEARTS & SPARKLES */
+function createHeart() {
+  const heart = document.createElement("span");
+  heart.className = "heart";
+  heart.textContent = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 18) + "px";
+  heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+  document.getElementById("hearts").appendChild(heart);
+  setTimeout(() => heart.remove(), 11000);
+}
+
+function createSparkle() {
+  const sparkle = document.createElement("span");
+  sparkle.className = "sparkle";
+  sparkle.textContent = Math.random() > 0.5 ? "✦" : "✧";
+  sparkle.style.left = Math.random() * 100 + "vw";
+  sparkle.style.fontSize = (8 + Math.random() * 10) + "px";
+  sparkle.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.getElementById("sparkles").appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 9000);
+}
+
+setInterval(createHeart, 700);
+setInterval(createSparkle, 500);
+
+/* ROYAL DOOR LOGIC */
+const royalDoor = document.getElementById("doorButton");
+const royalEntrance = document.getElementById("royalEntrance");
+const royalScene = document.getElementById("royalScene");
+const doorTap = document.getElementById("doorTap");
+let doorOpened = false;
+
+document.addEventListener("mousemove", (e) => {
+  if (doorOpened || !specialPage.classList.contains("visible")) return;
+  const x = (window.innerWidth / 2 - e.clientX) / 30;
+  const y = (window.innerHeight / 2 - e.clientY) / 30;
+  royalScene.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+
+function createDoorSparkles() {
+  const emojis = ['✨', '💖', '⭐', '🌸', '💫'];
+  const rect = royalDoor.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 50 + Math.random() * 100;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+    particle.style.left = centerX + "px";
+    particle.style.top = centerY + "px";
+    particle.style.setProperty("--tx", tx + "px");
+    particle.style.setProperty("--ty", ty + "px");
+    particle.style.fontSize = (12 + Math.random() * 14) + "px";
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 2000);
+  }
+}
+
+function openRoyalDoor() {
+  if (doorOpened) return;
+  doorOpened = true;
+  royalDoor.classList.add("open");
+  royalEntrance.classList.add("opened");
+  doorTap.textContent = "✨ A LITTLE MAGIC AWAITS...";
+  createDoorSparkles();
+
+  setTimeout(() => {
+    specialPage.style.display = "none";
+    document.getElementById("calendarScreen").classList.add("active");
+  }, 2200);
+}
+
+royalDoor.addEventListener("click", openRoyalDoor);
+royalDoor.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    openRoyalDoor();
+  }
+});
+
+/* CREATE NOVEMBER 2026 CALENDAR */
+const calendarDays = document.getElementById("calendarDays");
+for (let day = 1; day <= 30; day++) {
+  const button = document.createElement("button");
+  button.className = "day";
+  button.textContent = day;
+
+  if (day === 14) {
+    button.classList.add("special");
+    button.innerHTML = "💗";
+    button.setAttribute("aria-label", "November 14 surprise");
+    button.onclick = () => openDiary();
+  } else {
+    button.disabled = true;
+  }
+  calendarDays.appendChild(button);
+}
+
+/* SCREEN NAVIGATION */
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+  document.getElementById(screenId).classList.add("active");
+}
+
+/* DIARY PAGES DATA */
+const introPage = {
+  type: "intro",
+  icon: "💌",
+  title: "A Little Diary For You",
+  text: "This day is very special to me. Do you know why? ✨ Because on this day, I told you what I feel for you. 🥺💖\n\nI remember that night was so long and beautiful. Now a year has passed since that story began, but I remember it as if it happened just yesterday. 🥰\n\nI love you so much, my dear laduu! 💗 Let's turn the pages... ✨"
+};
+
+const photoPages = [
+  { type: "photo", src: "image1.png", title: "Our First Night Together 🌙", story: "The very first night I spent with you—a quiet, magical memory that still makes my heart smile every time I think of it. 💗", date: "14 Nov 25" },
+  { type: "photo", src: "image2.png", title: "Your First Touch ✨", story: "Your first touch felt like holding someone who was meant to be mine forever. 🥰" },
+  { type: "photo", src: "image3.png", title: "Our First Kiss 💋", story: "The moment my lips touched yours, I felt a kind of pure happiness I can never put into words. 💖", date: "21 Feb 26" },
+  { type: "photo", src: "image4.png", title: "Stronger Together 🌸", story: "A few misunderstandings and rough patches tried to pull us apart, but our love was always stronger than any storm. 💕" },
+  { type: "photo", src: "image5.png", title: "Your Magical Presence 💫", story: "Your magical presence healed me from within and brought back my brightest smile. ✨" },
+  { type: "photo", src: "image6.png", title: "Worth the Wait 🤍", story: "After waiting for months, your touch healed me in a way no medicine ever could. 🥺💗" },
+  { type: "photo", src: "image7.png", title: "Stay With Me Forever 🥰", story: "I am so happy with you. This past year brought so much and taught me so many things, yet every single day was bright simply because you were by my side. Will you stay with me until my very last breath? 💖" }
+];
+
+const questionPage = { type: "question", title: "One Last Question... 💗", text: "After flipping through these pages together...\n\nDo you like this journey? Do you wanna continue this as well? ✨" };
+const writePage = { type: "write", title: "Your Turn to Write ✍️💗" };
+
+const allPages = [introPage, ...photoPages, questionPage, writePage];
+
+const pagesStack = document.getElementById("pagesStack");
+const sheetElements = [];
+const textElements = [];
+
+allPages.forEach((page, index) => {
+  const sheet = document.createElement("div");
+  sheet.style.zIndex = allPages.length - index;
+
+  sheet.addEventListener("click", (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'TEXTAREA' || e.target.closest('button')) return;
+    if (currentPage === index) { nextPage(); }
+  });
+
+  if (page.type === "intro") {
+    sheet.className = "diary-sheet intro-sheet";
+    sheet.innerHTML = `<div class="intro-icon">${page.icon}</div><h2 class="intro-title">${page.title}</h2><p class="intro-body" id="pageText-${index}"></p>`;
+  } else if (page.type === "photo") {
+    sheet.className = "diary-sheet";
+    let dateHtml = page.date ? `<div class="page-date-stamp">${page.date}</div>` : '';
+    sheet.innerHTML = `
+      <div class="photo-frame">
+        <img class="memory-image" src="${page.src}" alt="${page.title}" decoding="sync">
+      </div>
+      ${dateHtml}
+      <h2 class="diary-title">${page.title}</h2>
+      <p class="diary-story" id="pageText-${index}"></p>
+    `;
+  } else if (page.type === "question") {
+    sheet.className = "diary-sheet no-auto-turn";
+    sheet.innerHTML = `<div class="intro-icon">💍</div><h2 class="intro-title">${page.title}</h2><p class="question-diary-text" id="pageText-${index}"></p><div class="diary-answers" id="diaryAnswers"><button class="diary-btn" onclick="handleChoice('YES')">YES 💖</button><button class="diary-btn no" onclick="handleChoice('NO')">NO 🙈</button></div><div class="celebration-banner" id="celebrationBanner"></div>`;
+  } else if (page.type === "write") {
+    sheet.className = "diary-sheet no-auto-turn";
+    sheet.innerHTML = `<div class="reaction-badge" id="reactionBadge"></div><h2 class="diary-title">${page.title}</h2><textarea class="diary-textarea" id="herNoteInput" placeholder="Write what you felt reading this diary... 💭💗"></textarea><div class="saved-note-display" id="savedNoteDisplay"></div><button class="diary-btn" id="saveNoteBtn" onclick="saveHerNote()">Save in Diary 💌</button><div class="seal-status" id="sealStatus"></div>`;
+  }
+
+  pagesStack.appendChild(sheet);
+  sheetElements.push(sheet);
+  textElements.push(document.getElementById(`pageText-${index}`) || null);
+});
+
+let typingTimer = null;
+let canTurnPage = false;
+
+function typePageText(pageIndex) {
+  clearInterval(typingTimer);
+  canTurnPage = false;
+
+  textElements.forEach(el => { if (el) el.classList.remove("typing-cursor"); });
+
+  const targetEl = textElements[pageIndex];
+  if (!targetEl) { canTurnPage = true; return; }
+
+  const pageData = allPages[pageIndex];
+  const fullText = pageData.type === "photo" ? pageData.story : pageData.text;
+
+  targetEl.textContent = "";
+  targetEl.classList.add("typing-cursor");
+
+  let charIndex = 0;
+  typingTimer = setInterval(() => {
+    if (charIndex < fullText.length) {
+      targetEl.textContent += fullText.charAt(charIndex);
+      charIndex++;
+    } else {
+      clearInterval(typingTimer);
+      targetEl.classList.remove("typing-cursor");
+      const bufferTime = (pageIndex === 9) ? 5000 : 800;
+      setTimeout(() => { canTurnPage = true; }, bufferTime);
+    }
+  }, 45);
+}
+
+let currentPage = 0;
+let isCelebrating = false;
+
+function openDiary() {
+  currentPage = 0;
+  isCelebrating = false;
+  document.getElementById("diaryBook").classList.remove("celebrating");
+
+  sheetElements.forEach(sheet => {
+    sheet.style.transition = "none";
+    sheet.classList.remove("flipped");
+  });
+  void pagesStack.offsetWidth;
+  sheetElements.forEach(sheet => { sheet.style.transition = ""; });
+
+  const banner = document.getElementById("celebrationBanner");
+  const answers = document.getElementById("diaryAnswers");
+  if (banner) { banner.textContent = ""; banner.classList.remove("show"); }
+  if (answers) { answers.style.pointerEvents = "auto"; }
+
+  const input = document.getElementById("herNoteInput");
+  const display = document.getElementById("savedNoteDisplay");
+  const btn = document.getElementById("saveNoteBtn");
+  const status = document.getElementById("sealStatus");
+  if (input) {
+    input.style.display = "block";
+    input.value = "";
+    display.style.display = "none";
+    btn.style.display = "inline-block";
+    status.textContent = "";
+  }
+
+  updateControls();
+  showScreen("imageScreen");
+  setTimeout(() => typePageText(0), 50);
+}
+
+function updateControls() {
+  const prevBtn = document.getElementById("prevButton");
+  const hint = document.getElementById("imageHint");
+  const pageType = allPages[currentPage].type;
+
+  if (currentPage === 0) { prevBtn.classList.add("hidden"); }
+  else { prevBtn.classList.remove("hidden"); }
+
+  if (pageType === "question") { hint.textContent = "Choose an answer above 💗"; }
+  else if (pageType === "write") { hint.textContent = "Write your heart out on this page ✨"; }
+  else { hint.textContent = "Tap page to turn ✨"; }
+}
+
+function nextPage() {
+  if (!canTurnPage && allPages[currentPage].type !== "question" && allPages[currentPage].type !== "write") return;
+  if (currentPage < allPages.length - 1) {
+    sheetElements[currentPage].classList.add("flipped");
+    currentPage++;
+    updateControls();
+    typePageText(currentPage);
+  }
+}
+
+function prevPage() {
+  if (isCelebrating) return;
+  if (currentPage > 0) {
+    currentPage--;
+    sheetElements[currentPage].classList.remove("flipped");
+    updateControls();
+    canTurnPage = true;
+    const targetEl = textElements[currentPage];
+    if (targetEl) {
+      targetEl.textContent = allPages[currentPage].type === "photo" ? allPages[currentPage].story : allPages[currentPage].text;
+    }
+  }
+}
+
+function launchFireworks() {
+  const colors = ["#ffd700", "#ff65d5", "#ff9be4", "#fff3b0", "#c77dff", "#ff4d6d"];
+  const burstPoints = [
+    { x: window.innerWidth * 0.25, y: window.innerHeight * 0.28 },
+    { x: window.innerWidth * 0.75, y: window.innerHeight * 0.25 },
+    { x: window.innerWidth * 0.50, y: window.innerHeight * 0.20 }
+  ];
+
+  burstPoints.forEach((pt, idx) => {
+    setTimeout(() => {
+      for (let i = 0; i < 22; i++) {
+        const spark = document.createElement("div");
+        spark.className = "firework-spark";
+        const angle = (Math.PI * 2 * i) / 22;
+        const distance = 50 + Math.random() * 75;
+        spark.style.left = pt.x + "px";
+        spark.style.top = pt.y + "px";
+        spark.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+        spark.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        spark.style.background = color;
+        spark.style.boxShadow = `0 0 6px ${color}`;
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 1100);
+      }
+    }, idx * 240);
+  });
+}
+
+function handleChoice(choice) {
+  if (isCelebrating) return;
+  const badge = document.getElementById("reactionBadge");
+  const banner = document.getElementById("celebrationBanner");
+  const diaryBook = document.getElementById("diaryBook");
+  const answers = document.getElementById("diaryAnswers");
+
+  if (choice === "YES") {
+    isCelebrating = true;
+    answers.style.pointerEvents = "none";
+    diaryBook.classList.add("celebrating");
+    banner.textContent = "Happy Anniversary, My Laduu! 💖✨";
+    banner.classList.add("show");
+    badge.textContent = "Happy Anniversary, My Laduu! 💖✨";
+    launchFireworks();
+
+    setTimeout(() => {
+      diaryBook.classList.remove("celebrating");
+      isCelebrating = false;
+      nextPage();
+    }, 2500);
+  } else {
+    badge.textContent = "That's okay! 😊 Thank you for reading through these memories 💗";
+    nextPage();
+  }
+}
+
+/* Updated function to send note to your email */
+function saveHerNote() {
+  const input = document.getElementById("herNoteInput");
+  const display = document.getElementById("savedNoteDisplay");
+  const btn = document.getElementById("saveNoteBtn");
+  const status = document.getElementById("sealStatus");
+
+  const noteText = input.value.trim();
+  if (!noteText) {
+    status.textContent = "Write a few words first, laduu! 🥺💗";
+    return;
+  }
+
+  status.textContent = "Sending to my heart... 💌";
+
+  fetch("https://formspree.io/f/xkjrgrpp", {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ note: noteText })
+  }).then(response => {
+    input.style.display = "none";
+    display.textContent = `"${noteText}"`;
+    display.style.display = "block";
+    btn.style.display = "none";
+    status.textContent = "Saved in our diary forever 💗✨";
+  }).catch(error => {
+    input.style.display = "none";
+    display.textContent = `"${noteText}"`;
+    display.style.display = "block";
+    btn.style.display = "none";
+    status.textContent = "Saved locally! 💕";
+  });
+}
+</script>
+
+</body>
+</html>
